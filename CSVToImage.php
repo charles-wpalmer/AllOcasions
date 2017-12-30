@@ -14,6 +14,7 @@ require 'DBAdapter.php';
 class CSVToImage
 {
     private $db;
+    private $imagePath = './images/';
 
     /**
      * Runs the sequence of events for the script
@@ -72,7 +73,8 @@ class CSVToImage
      * Saves the image from i-nigma
      */
     private function generateImage($name, $orderId){
-        $img = './images/' . $orderId . '.png';
+        $img = $this->imagePath . $orderId . '.png';
+
         $url = "http://encode.i-nigma.com/QRCode/img.php?d=SMSTO%3A07786207206%3ADel+$orderId&c=$name&s=3";
         
         file_put_contents($img, file_get_contents($url));
