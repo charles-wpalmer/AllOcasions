@@ -39,9 +39,9 @@ class CSVToImage
                 //TODO:
                 //  -   Pull this data from the file
                 
-                $name = 'Test';
+                $name = 'Test123';
                 $postcode = 'Test';
-                $orderId = '#1234678912';
+                $orderId = '#12346789123';
 
                 $orderId = str_replace("#","",$orderId);
                 
@@ -74,7 +74,7 @@ class CSVToImage
      */
     private function generateImage($name, $orderId){
         $img = $this->imagePath . $orderId . '.png';
-
+        
         $url = "http://encode.i-nigma.com/QRCode/img.php?d=SMSTO%3A07786207206%3ADel+$orderId&c=$name&s=3";
         
         file_put_contents($img, file_get_contents($url));
