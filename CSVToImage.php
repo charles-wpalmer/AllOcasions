@@ -13,9 +13,21 @@ require 'DBAdapter.php';
 
 class CSVToImage
 {
+    /**
+     * @var $db object DBAdapter
+     */
     private $db;
-    private $imagePath = './images/';
 
+    /**
+     * @var $imagePath String
+     */
+    private $imagePath = './images/';
+    
+    /**
+     * @var $pattern String
+     */
+    private $pattern = "/((GIR 0AA)|((([A-PR-UWYZ][0-9][0-9]?)|(([A-PR-UWYZ][A-HK-Y][0-9][0-9]?)|(([A-PR-UWYZ][0-9][A-HJKSTUW])|([A-PR-UWYZ][A-HK-Y][0-9][ABEHMNPRVWXY])))) [0-9][ABD-HJLNP-UW-Z]{2}))/i";
+    
     /**
      * Runs the sequence of events for the script
      */
@@ -23,27 +35,28 @@ class CSVToImage
         $this->db = new DBAdapter('localhost', 'root', 'all_occasions', 'user');
 
         $this->readCsv();
-
     }
 
     /**
-     * Reads the latest CSV file
+     * Reads the latest CSV file, and handles the orders. 
+     * Then generates the images based on the file.
      */
     private function readCsv(){
 
-        if ($file = fopen("today.csv", "r")) {
+        if ($file = fopen("Extract_291217_105723.csv", "r")) {
             while (!feof($file)) {
                 $line = fgets($file);
+
+                // Postcode
+                preg_match($this->pattern, $line, $matches);
+                $postcode = $matches[0];
+
+                // OrderID
                 $line = explode(",", $line);
-
-                //TODO:
-                //  -   Pull this data from the file
+                $orderId = $line[1];
                 
-                $name = 'Test123';
-                $postcode = 'Test';
-                $orderId = '#12346789123';
-
-                $orderId = str_replace("#","",$orderId);
+                // Name
+                $name = $line[2];
                 
                 if(!$this->orderExists($orderId)) {
                     $this->saveOrder($name, $postcode, $orderId);
