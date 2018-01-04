@@ -43,10 +43,10 @@ class CSVToImage
      */
     private function readCsv(){
 
-        if ($file = fopen("Extract_291217_105723.csv", "r")) {
+        if ($file = fopen("actual.csv", "r")) {
             while (!feof($file)) {
                 $line = fgets($file);
-
+                
                 // Postcode
                 preg_match($this->pattern, $line, $matches);
                 $postcode = $matches[0];
@@ -86,10 +86,16 @@ class CSVToImage
      * Saves the image from i-nigma
      */
     private function generateImage($name, $orderId){
-        $img = $this->imagePath . $orderId . '.png';
+
+        $remove = array('E', ' ', '#', '.');
+        $orderId = str_replace($remove, '', $orderId);
+        $name = str_replace($remove, '', $name);
         
-        $url = "http://encode.i-nigma.com/QRCode/img.php?d=SMSTO%3A07786207206%3ADel+$orderId&c=$name&s=3";
+        $img = "./images/$orderId.png";
         
+        $url = 'http://encode.i-nigma.com/QRCode/img.php?d=SMSTO%3A07786207206%3ADel+'.$orderId.'&c='.$name.'&s=3';
+        
+        var_dump($url);
         file_put_contents($img, file_get_contents($url));
     }
 
