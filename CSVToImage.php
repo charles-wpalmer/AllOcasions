@@ -95,7 +95,6 @@ class CSVToImage
         
         $url = 'http://encode.i-nigma.com/QRCode/img.php?d=SMSTO%3A07786207206%3ADel+'.$orderId.'&c='.$name.'&s=3';
         
-        var_dump($url);
         file_put_contents($img, file_get_contents($url));
     }
 
